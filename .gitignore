@@ -1,2 +1,3 @@
 /db.sqlite3
 /geo/__pycache__
+/extuser/migrations
