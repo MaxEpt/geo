@@ -3,6 +3,8 @@ from django.conf import settings
 # Create your models here.
 class Categories(models.Model):
     cat_name = models.CharField('Название категории', max_length=150)
+    def __str__(self):
+        return self.cat_name
     class Meta:        
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
@@ -15,7 +17,7 @@ class Bids(models.Model):
     offer_sent = models.BooleanField('Предложение отправлено',default=False)
     offer_accept = models.BooleanField('Предложение принятно', default=False)
     bid_create_date = models.DateTimeField('Время создания заявки', auto_now_add=True)
-    offer_sent_date = models.DateTimeField('Время отправки предложения', blank=True)
+    offer_sent_date = models.DateTimeField('Время отправки предложения', auto_now_add=True)
     class Meta:        
         verbose_name = 'Заявка'
         verbose_name_plural = 'Заявки'
