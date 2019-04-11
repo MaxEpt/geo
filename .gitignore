@@ -3,3 +3,5 @@
 /extuser/migrations
 /extuser/__pycache__
 /static
+/main/migrations
+/main/__pycache__
