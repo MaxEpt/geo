@@ -3,6 +3,8 @@ from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.models import BaseUserManager
 
+from main.models import Cities
+
 # Create your models here.
 class UserManager(BaseUserManager):
 
@@ -46,7 +48,9 @@ class ExtUser(AbstractBaseUser, PermissionsMixin):
         default=False
     )
     is_system_user = models.BooleanField('Системный пользователь', default=False)
-
+    city = models.ForeignKey(Cities, blank=True, on_delete=models.PROTECT, null=True)
+    date_of_birth = models.DateField('Дата рождения', blank=True)
+    push_token = models.TextField('GCM Token', max_length=200, blank=True, null=True)
 
     # Этот метод обязательно должен быть определён
     def get_full_name(self):

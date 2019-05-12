@@ -15,13 +15,15 @@ class UserAdmin(UserAdmin):
         'register_date',
         'is_admin',
         'is_active',
-        'is_system_user'
+        'is_system_user',
+        'date_of_birth',
+        'city',
     ]
 
     list_filter = ('is_admin', 'register_date', 'is_active')
 
     fieldsets = (
-                (None, {'fields': ('phone', 'password', 'is_system_user')}),
+                (None, {'fields': ('phone', 'password', 'is_system_user', 'city')}),
                 ('Permissions', {'fields': ('is_admin',)}),
                 ('Important dates', {'fields': ('last_login',)}),
     )
