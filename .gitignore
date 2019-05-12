@@ -5,4 +5,5 @@
 /static
 /main/migrations
 /main/__pycache__
+/api_v0/__pycache__
 /.vscode
