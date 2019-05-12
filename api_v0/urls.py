@@ -5,5 +5,6 @@ from .views import *
 
 urlpatterns = [
     url(r'login/$', views.obtain_auth_token),
-    url(r'cities/$', CitiesView.as_view()),    
+    url(r'cities/$', CitiesView.as_view()),
+    url(r'onetimePass/$', OnetimePassView.as_view()),    
 ]
