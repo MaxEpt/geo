@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from unixtimestampfield.fields import UnixTimeStampField
 # Create your models here.
 class Categories(models.Model):
     cat_name = models.CharField('Название категории', max_length=150)
@@ -31,4 +32,13 @@ class Cities(models.Model):
     class Meta:        
         verbose_name = 'Город'
         verbose_name_plural = 'Города'
+
+class OnetimePass(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
+    onetime_pass = models.IntegerField("Одноразовый пароль")
+    confirmed = models.BooleanField('Подтвержден', default=False)
+    created_at = UnixTimeStampField("timestamp", auto_now_add=True)
+    class Meta:        
+        verbose_name = 'Одноразовый пароль'
+        verbose_name_plural = 'Одноразовые пароли'
         

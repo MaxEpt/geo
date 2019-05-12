@@ -25,3 +25,12 @@ class CitiesAdmin(admin.ModelAdmin):
         'longitude',
         'latitude',
     ]
+
+@admin.register(OnetimePass)
+class OnetimePassAdmin(admin.ModelAdmin):
+    list_display = [
+        'user',
+        'onetime_pass',
+        'created_at',
+        'confirmed',
+    ]
