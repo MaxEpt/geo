@@ -29,7 +29,7 @@ class CitiesAdmin(admin.ModelAdmin):
 @admin.register(OnetimePass)
 class OnetimePassAdmin(admin.ModelAdmin):
     list_display = [
-        'user',
+        'user_phone',
         'onetime_pass',
         'created_at',
         'confirmed',

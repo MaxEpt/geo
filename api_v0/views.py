@@ -27,6 +27,13 @@ class OnetimePassView(APIView):
             return Response({'message': 'Введите номер телефона'}, status=status.HTTP_400_BAD_REQUEST)
         if re.match(phone_tpl, request.GET['phone']) is None:
             return Response({'message': 'Неверный формат номера телефона'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        new_onetime_pass = OnetimePass(
+            user_phone = request.GET['phone'],
+            onetime_pass = onetime_pass
+        )
+        new_onetime_pass.save()
+        
         requests.post("https://gate.smsaero.ru/send/?user=zuev-egor@inbox.ru&password=9iH9TOaRx2zJGPTC3yjogBArodc&type=3&to=" +
                         request.GET['phone'] + "&text=Код активации: " + str(onetime_pass) + "&from=Moika+SAM")
         return Response(status=status.HTTP_200_OK)

@@ -34,9 +34,9 @@ class Cities(models.Model):
         verbose_name_plural = 'Города'
 
 class OnetimePass(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
+    user_phone = models.CharField("Номер телефона", max_length=11, default="")
     onetime_pass = models.IntegerField("Одноразовый пароль")
-    confirmed = models.BooleanField('Подтвержден', default=False)
+    confirmed = models.BooleanField("Подтвержден", default=False)
     created_at = UnixTimeStampField("timestamp", auto_now_add=True)
     class Meta:        
         verbose_name = 'Одноразовый пароль'
