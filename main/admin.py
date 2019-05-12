@@ -17,3 +17,11 @@ class BidsAdmin(admin.ModelAdmin):
         'offer_sent',
         'offer_accept',
     ]
+
+@admin.register(Cities)
+class CitiesAdmin(admin.ModelAdmin):
+    list_display = [
+        'name',
+        'longitude',
+        'latitude',
+    ]

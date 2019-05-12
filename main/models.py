@@ -22,3 +22,13 @@ class Bids(models.Model):
         verbose_name = 'Заявка'
         verbose_name_plural = 'Заявки'
         ordering = ['-bid_create_date']
+
+
+class Cities(models.Model):
+    name = models.CharField('Название', max_length=50)
+    latitude = models.FloatField('Широта')
+    longitude = models.FloatField('Долгота')
+    class Meta:        
+        verbose_name = 'Город'
+        verbose_name_plural = 'Города'
+        
