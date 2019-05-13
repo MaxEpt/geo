@@ -37,7 +37,7 @@ class OnetimePassView(APIView):
         
         requests.post("https://gate.smsaero.ru/send/?user=zuev-egor@inbox.ru&password=9iH9TOaRx2zJGPTC3yjogBArodc&type=3&to=" +
                         request.GET['phone'] + "&text=Код активации: " + str(onetime_pass) + "&from=Moika+SAM")
-        return Response({'pass':onetime_pass},status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_200_OK)
 
 class ConfirmOnetimePass(APIView):
     def post(self, request):
@@ -52,7 +52,7 @@ class ConfirmOnetimePass(APIView):
         if request.POST['onetime_pass'] == str(onetime_pass.onetime_pass) and not onetime_pass.confirmed:
             onetime_pass.confirmed = True
             onetime_pass.save()
-
+            existing_user = 'Y'
             try:
                 user = get_user_model().objects.get(phone=request.POST['phone'])                
             except get_user_model().DoesNotExist:
@@ -60,9 +60,10 @@ class ConfirmOnetimePass(APIView):
                 user = get_user_model().objects.create(
                     phone = request.POST['phone'],
                     password = new_pass,
-                )    
+                )
+                existing_user = 'N'                    
             token = Token.objects.get_or_create(user=user)
-            return Response({'token':str(token[0])}, status=status.HTTP_200_OK)
+            return Response({'token':str(token[0]), 'existing_user':existing_user}, status=status.HTTP_200_OK)
         else:
             return Response({'message':'Неверный пароль, попробуйте запросить новый'},status=status.HTTP_400_BAD_REQUEST)
 
