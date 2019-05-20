@@ -4,6 +4,8 @@ from rest_framework import viewsets
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from django.utils import timezone
+#from django.utils.dateparse import parse_date
+import datetime
 from django.utils.crypto import get_random_string
 import random
 from rest_framework import status
@@ -67,11 +69,32 @@ class ConfirmOnetimePass(APIView):
         else:
             return Response({'message':'Неверный пароль, попробуйте запросить новый'},status=status.HTTP_400_BAD_REQUEST)
 
-#class UpdateUser(APIView):
-    #authentication_classes = (TokenAuthentication,)
-    #permission_classes = (IsAuthenticated,)
-    #def post(self, request):
-        #user = request.user
-        #user.sex = 'Y'
-        #user.save()
-        #return Response
+class UpdateUser(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    def post(self, request):        
+        
+        if 'birth_date' not in request.POST or request.POST['birth_date']=="":
+            return Response ({'message':'Не указана дата рождения'},status=status.HTTP_400_BAD_REQUEST)
+
+        if 'name' not in request.POST or request.POST['name']=="":
+            return Response ({'message':'Не указано имя'},status=status.HTTP_400_BAD_REQUEST)
+        
+        if 'city_id' not in request.POST or request.POST['city_id']=="":
+            return Response ({'message':'Не выбран город'},status=status.HTTP_400_BAD_REQUEST)
+        
+        if 'sex' not in request.POST or request.POST['sex']=="":
+            return Response ({'message':'Не указан пол'},status=status.HTTP_400_BAD_REQUEST)
+
+        user = request.user        
+        
+        str_birth_date = request.POST['birth_date']        
+        datetime_obj = datetime.datetime.strptime(str_birth_date, '%d.%m.%Y')
+
+        user.date_of_birth = datetime_obj
+        user.city = Cities.objects.get(pk=int(request.POST['city_id']))
+        user.sex = request.POST['sex']
+        user.name = request.POST['name']
+        
+        user.save()        
+        return Response(status=status.HTTP_200_OK)

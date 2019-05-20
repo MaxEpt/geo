@@ -52,6 +52,7 @@ class ExtUser(AbstractBaseUser, PermissionsMixin):
     date_of_birth = models.DateField('Дата рождения', blank=True, null=True)
     push_token = models.TextField('GCM Token', max_length=200, blank=True, null=True)
     sex = models.CharField('Пол', max_length=1, default='')
+    name = models.CharField('Имя', max_length=100, blank=True, null=True)
 
     # Этот метод обязательно должен быть определён
     def get_full_name(self):
