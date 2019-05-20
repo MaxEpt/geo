@@ -127,3 +127,20 @@ class BidsView(APIView):
         new_bid.save()
         return Response(status=status.HTTP_200_OK)
 
+    def get(self, request):
+        user = request.user
+        if 'id' in request.GET and request.GET['id'] != "":
+            try:
+                bid = Bids.objects.get(pk=int(request.GET['id']))
+                if bid.user == user:
+                    serializer = DetailBidSerializer(bid)
+                    return Response(serializer.data)
+            except Bids.DoesNotExist:
+                return Response({'message':'Что то пошло не так, Олежик. Это бэд реквест, выпей таблеточку.'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+            
+        else:
+            bids = Bids.objects.filter(user=user, offer_sent=True)
+            serializer = BidsSerializer(bids, many=True)
+            return Response(serializer.data)

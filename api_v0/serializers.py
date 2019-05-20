@@ -12,3 +12,25 @@ class CategoriesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Categories
         fields = ("id", "cat_name","image")
+
+class PlaceSerializer(serializers.ModelSerializer):    
+     class Meta:
+        model = Place
+        fields = ("id", "name")
+
+class DetailPlaceSerializer(serializers.ModelSerializer):    
+     class Meta:
+        model = Place
+        fields = ("id", "name", "description", "address", "image")   
+
+class BidsSerializer(serializers.ModelSerializer):
+    offer_place = PlaceSerializer()
+    class Meta:
+        model = Bids
+        fields = ("id", "short_desc","offer_place","offer_type")
+
+class DetailBidSerializer(serializers.ModelSerializer):
+    offer_place = DetailPlaceSerializer()
+    class Meta:
+        model = Bids
+        fields = ("offer_place", "offer_text")

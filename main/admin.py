@@ -17,6 +17,7 @@ class BidsAdmin(admin.ModelAdmin):
         'offer_text',
         'offer_sent',
         'offer_accept',
+        'offer_type'
     ]
 
 @admin.register(Cities)
@@ -34,4 +35,13 @@ class OnetimePassAdmin(admin.ModelAdmin):
         'onetime_pass',
         'created_at',
         'confirmed',
+    ]
+
+
+@admin.register(Place)
+class PlaceAdmin(admin.ModelAdmin):
+    list_display = [
+        'name',
+        'city',
+        'category',        
     ]
