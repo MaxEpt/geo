@@ -67,4 +67,11 @@ class ConfirmOnetimePass(APIView):
         else:
             return Response({'message':'Неверный пароль, попробуйте запросить новый'},status=status.HTTP_400_BAD_REQUEST)
 
-
+#class UpdateUser(APIView):
+    #authentication_classes = (TokenAuthentication,)
+    #permission_classes = (IsAuthenticated,)
+    #def post(self, request):
+        #user = request.user
+        #user.sex = 'Y'
+        #user.save()
+        #return Response

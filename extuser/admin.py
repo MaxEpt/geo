@@ -18,6 +18,7 @@ class UserAdmin(UserAdmin):
         'is_system_user',
         'date_of_birth',
         'city',
+        'sex'
     ]
 
     list_filter = ('is_admin', 'register_date', 'is_active')
