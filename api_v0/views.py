@@ -105,3 +105,25 @@ class CategoriesView(APIView):
         serializer = CategoriesSerializer(categories, many=True)
         return Response(serializer.data)
 
+class BidsView(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    def post(self, request):
+        
+        if 'wish' not in request.POST or request.POST['wish']=="":
+            return Response ({'message':'Сообщите нам свои пожелания :)'},status=status.HTTP_400_BAD_REQUEST)
+        
+        if 'wish_date' not in request.POST or request.POST['wish_date']=="":
+            return Response ({'message':'Укажите дату'},status=status.HTTP_400_BAD_REQUEST)
+        
+        user = request.user
+        datetime_obj = datetime.datetime.strptime(request.POST['wish_date'], '%d.%m.%Y')
+        new_bid = Bids (
+            user = user,
+            category = Categories.objects.get(pk=int(request.POST['category'])),
+            wish = request.POST['wish'],
+            wish_date = datetime_obj,
+        )
+        new_bid.save()
+        return Response(status=status.HTTP_200_OK)
+

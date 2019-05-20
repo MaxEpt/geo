@@ -9,5 +9,6 @@ urlpatterns = [
     url(r'onetimePass/$', OnetimePassView.as_view()),    
     url(r'confirmOnetimePass/$', ConfirmOnetimePass.as_view()),
     url(r'updateUser/$', UpdateUser.as_view()),
-    url(r'categories/$', CategoriesView.as_view()),    
+    url(r'categories/$', CategoriesView.as_view()),
+    url(r'bids/$', BidsView.as_view()),    
 ]

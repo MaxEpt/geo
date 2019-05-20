@@ -14,7 +14,8 @@ class Categories(models.Model):
 class Bids(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     category = models.ForeignKey(Categories, on_delete=models.PROTECT)
-    wish = models.TextField('Пожелание')    
+    wish = models.TextField('Пожелание')
+    wish_date = models.DateField('Желаемая дата', default=None)    
     offer_text = models.CharField('Предложение', max_length=200)
     offer_sent = models.BooleanField('Предложение отправлено',default=False)
     offer_accept = models.BooleanField('Предложение принятно', default=False)

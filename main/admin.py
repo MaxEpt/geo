@@ -13,6 +13,7 @@ class BidsAdmin(admin.ModelAdmin):
         'category',
         'bid_create_date',
         'wish',
+        'wish_date',
         'offer_text',
         'offer_sent',
         'offer_accept',
