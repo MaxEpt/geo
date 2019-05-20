@@ -98,3 +98,10 @@ class UpdateUser(APIView):
         
         user.save()        
         return Response(status=status.HTTP_200_OK)
+
+class CategoriesView(APIView):
+    def get(self, request):        
+        categories = Categories.objects.all()
+        serializer = CategoriesSerializer(categories, many=True)
+        return Response(serializer.data)
+

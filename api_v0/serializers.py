@@ -7,3 +7,8 @@ class CitiesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cities
         fields = ("id", "name","latitude", "longitude")
+
+class CategoriesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Categories
+        fields = ("id", "cat_name","image")

@@ -4,6 +4,7 @@ from unixtimestampfield.fields import UnixTimeStampField
 # Create your models here.
 class Categories(models.Model):
     cat_name = models.CharField('Название категории', max_length=150)
+    image = models.FileField(blank=True)
     def __str__(self):
         return self.cat_name
     class Meta:        
