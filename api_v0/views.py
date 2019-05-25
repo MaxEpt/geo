@@ -109,26 +109,26 @@ class BidsView(APIView):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
     def post(self, request):
-        
-        if 'accept_bid' in request.POST and int(request.POST['accept_bid']) == 1:
+        user = request.user
+
+        if 'accept_bid' in request.POST and int(request.POST['accept_bid']) == 1:            
             if 'id' not in request.POST or request.POST['id']=="":
                 return Response ({'message':'Что-то пошло не так, скорее всего нет ID заявки'},status=status.HTTP_400_BAD_REQUEST)
             try:
                 bid = Bids.objects.get(pk=int(request.POST['id']))
-                if bid.user == user:
-                    serializer = DetailBidSerializer(bid)
-                    return Response(serializer.data)
+                if bid.user == user and not bid.offer_accept:                    
+                    bid.offer_accept = True
+                    bid.save()
+                    return Response(status=status.HTTP_200_OK)
             except Bids.DoesNotExist:
-                return Response({'message':'Что то пошло не так!'}, status=status.HTTP_400_BAD_REQUEST)    
-
+                return Response({'message':'Что то пошло не так, такой заявки нет'}, status=status.HTTP_400_BAD_REQUEST)
         
         if 'wish' not in request.POST or request.POST['wish']=="":
             return Response ({'message':'Сообщите нам свои пожелания :)'},status=status.HTTP_400_BAD_REQUEST)
         
         if 'wish_date' not in request.POST or request.POST['wish_date']=="":
-            return Response ({'message':'Укажите дату'},status=status.HTTP_400_BAD_REQUEST)
+            return Response ({'message':'Укажите дату'},status=status.HTTP_400_BAD_REQUEST)        
         
-        user = request.user
         datetime_obj = datetime.datetime.strptime(request.POST['wish_date'], '%d.%m.%Y')
         new_bid = Bids (
             user = user,
@@ -142,6 +142,7 @@ class BidsView(APIView):
     def get(self, request):
         user = request.user
         if 'id' in request.GET and request.GET['id'] != "":
+            print("TEST")
             try:
                 bid = Bids.objects.get(pk=int(request.GET['id']))
                 if bid.user == user:
