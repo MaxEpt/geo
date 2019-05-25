@@ -110,6 +110,18 @@ class BidsView(APIView):
     permission_classes = (IsAuthenticated,)
     def post(self, request):
         
+        if 'accept_bid' in request.POST and int(request.POST['accept_bid']) == 1:
+            if 'id' not in request.POST or request.POST['id']=="":
+                return Response ({'message':'Что-то пошло не так, скорее всего нет ID заявки'},status=status.HTTP_400_BAD_REQUEST)
+            try:
+                bid = Bids.objects.get(pk=int(request.POST['id']))
+                if bid.user == user:
+                    serializer = DetailBidSerializer(bid)
+                    return Response(serializer.data)
+            except Bids.DoesNotExist:
+                return Response({'message':'Что то пошло не так!'}, status=status.HTTP_400_BAD_REQUEST)    
+
+        
         if 'wish' not in request.POST or request.POST['wish']=="":
             return Response ({'message':'Сообщите нам свои пожелания :)'},status=status.HTTP_400_BAD_REQUEST)
         
@@ -136,10 +148,7 @@ class BidsView(APIView):
                     serializer = DetailBidSerializer(bid)
                     return Response(serializer.data)
             except Bids.DoesNotExist:
-                return Response({'message':'Что то пошло не так, Олежик. Это бэд реквест, выпей таблеточку.'}, status=status.HTTP_400_BAD_REQUEST)
-
-
-            
+                return Response({'message':'Что то пошло не так, Олежик. Это бэд реквест, выпей таблеточку.'}, status=status.HTTP_400_BAD_REQUEST)            
         else:
             bids = Bids.objects.filter(user=user, offer_sent=True)
             serializer = BidsSerializer(bids, many=True)
