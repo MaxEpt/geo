@@ -19,9 +19,10 @@ class PlaceSerializer(serializers.ModelSerializer):
         fields = ("id", "name")
 
 class DetailPlaceSerializer(serializers.ModelSerializer):    
+     category = CategoriesSerializer()
      class Meta:
         model = Place
-        fields = ("id", "name", "description", "address", "image")   
+        fields = ("id", "name", "description", "address", "image", "category")   
 
 class BidsSerializer(serializers.ModelSerializer):
     offer_place = PlaceSerializer()
