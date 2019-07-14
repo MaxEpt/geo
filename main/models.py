@@ -66,7 +66,7 @@ class OnetimePass(models.Model):
         verbose_name_plural = 'Одноразовые пароли'
 
 class NotificationSetting(models.Model):
-    admin_email = models.CharField("E-Mail администратора", max_lenght=100, default="")
+    admin_email = models.CharField("E-Mail администратора", max_length=100, default="")
     class Meta:
         verbose_name = 'Настройка уведомлений'
         verbose_name_plural = 'Настройки уведомлений' 
