@@ -59,7 +59,7 @@ class ConfirmOnetimePass(APIView):
             try:
                 user = get_user_model().objects.get(phone=request.POST['phone'])
                 user_info.append({
-                    'city':user.city,
+                    'city':user.city.name,
                     'date_of_birth':user.date_of_birth,
                     'sex':user.sex,
                     'name':user.name,
