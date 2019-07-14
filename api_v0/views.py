@@ -55,8 +55,15 @@ class ConfirmOnetimePass(APIView):
             onetime_pass.confirmed = True
             onetime_pass.save()
             existing_user = 'Y'
+            user_info = []
             try:
-                user = get_user_model().objects.get(phone=request.POST['phone'])                
+                user = get_user_model().objects.get(phone=request.POST['phone'])
+                user_info.append({
+                    'city':user.city,
+                    'date_of_birth':user.date_of_birth,
+                    'sex':user.sex,
+                    'name':user.name,
+                })                                
             except get_user_model().DoesNotExist:
                 new_pass = get_random_string(length=9)
                 user = get_user_model().objects.create(
@@ -65,7 +72,7 @@ class ConfirmOnetimePass(APIView):
                 )
                 existing_user = 'N'                    
             token = Token.objects.get_or_create(user=user)
-            return Response({'token':str(token[0]), 'existing_user':existing_user}, status=status.HTTP_200_OK)
+            return Response({'token':str(token[0]), 'existing_user':existing_user, 'user_info':user_info}, status=status.HTTP_200_OK)
         else:
             return Response({'message':'Неверный пароль, попробуйте запросить новый'},status=status.HTTP_400_BAD_REQUEST)
 
