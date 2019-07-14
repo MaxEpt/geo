@@ -45,7 +45,7 @@ class PlaceAdmin(admin.ModelAdmin):
         'city',
         'category',        
     ]
-
+@admin.register(NotificationSetting)
 class NotificationSettingAdmin(admin.ModelAdmin):
     list_display = [
         'admin_email'
