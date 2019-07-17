@@ -17,7 +17,8 @@ class BidsAdmin(admin.ModelAdmin):
         'offer_text',
         'offer_sent',
         'offer_accept',
-        'offer_type'
+        'offer_canceled',
+        'offer_type',        
     ]
 
 @admin.register(Cities)

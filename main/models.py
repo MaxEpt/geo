@@ -48,7 +48,7 @@ class Bids(models.Model):
     offer_place = models.ForeignKey(Place, on_delete=models.PROTECT, null=True)
     offer_sent = models.BooleanField('Предложение отправлено', default=False)
     offer_accept = models.BooleanField('Предложение принятно', default=False)
-    
+    offer_canceled = models.BooleanField('Предложение отклонено', default=False)
     bid_create_date = models.DateTimeField('Время создания заявки', auto_now_add=True)
     offer_sent_date = models.DateTimeField('Время отправки предложения', auto_now_add=True)
     class Meta:        

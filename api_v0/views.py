@@ -133,6 +133,20 @@ class BidsView(APIView):
             except Bids.DoesNotExist:
                 return Response({'message':'Что то пошло не так, такой заявки нет'}, status=status.HTTP_400_BAD_REQUEST)
         
+        if 'cancel_bid' in request.POST and int(request.POST['cancel_bid']) == 1:
+            if 'id' not in request.POST or request.POST['id']=="":
+                return Response ({'message':'Что-то пошло не так, скорее всего нет ID заявки'},status=status.HTTP_400_BAD_REQUEST)
+            try:
+                bid = Bids.objects.get(pk=int(request.POST['id']))
+                if bid.user == user and not bid.offer_accept:                    
+                    bid.offer_canceled = True
+                    bid.save()
+                    return Response(status=status.HTTP_200_OK)
+                else:
+                    return Response({'message':'Отмена заявки. Что-то пошло не так'}, status=status.HTTP_400_BAD_REQUEST)
+            except Bids.DoesNotExist:
+                return Response({'message':'Что то пошло не так, такой заявки нет'}, status=status.HTTP_400_BAD_REQUEST)
+
         if 'wish' not in request.POST or request.POST['wish']=="":
             return Response ({'message':'Сообщите нам свои пожелания :)'},status=status.HTTP_400_BAD_REQUEST)
         
