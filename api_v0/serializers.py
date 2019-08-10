@@ -65,5 +65,5 @@ class DetailOfferSerializer(serializers.ModelSerializer):
 class OfferListSerializer(serializers.ModelSerializer):
     place = PlaceSerializer()
     class Meta:
-        model = Bids
+        model = Offer
         fields = ("id", "short_desc","place","type")
