@@ -28,7 +28,7 @@ class Place(models.Model):
     city = models.ForeignKey(Cities, on_delete=models.PROTECT)
     category = models.ForeignKey(Categories, on_delete=models.PROTECT)
     description = models.TextField("Описание")
-    manager = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name="Менеджер", on_delete=models.PROTECT, blank=True, default=None)
+    manager = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name="Менеджер", on_delete=models.PROTECT, blank=True)
     def __str__(self):
         return self.name
     class Meta:        
