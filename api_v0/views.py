@@ -180,3 +180,23 @@ class BidsView(APIView):
             bids = Bids.objects.filter(user=user, offer_sent=True, offer_accept=False, offer_canceled=False)
             serializer = BidsSerializer(bids, many=True)
             return Response(serializer.data)
+
+class OfferView(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    def get(self, request):
+        user = request.user
+        if 'id' in request.GET and request.GET['id'] != "":            
+            try:
+                offer = Offer.objects.get(pk=int(request.GET['id']))
+                if offer.bid.user == user:
+                    serializer = DetailOfferSerializer(offer)
+                    return Response(serializer.data)
+                else:
+                    return Response({'message':'Что-то пошло не так'}, status=status.HTTP_400_BAD_REQUEST)
+            except Bids.DoesNotExist:
+                return Response({'message':'Что то пошло не так, Олежик. Это бэд реквест, выпей таблеточку.'}, status=status.HTTP_400_BAD_REQUEST)            
+        else:
+            bids = Bids.objects.filter(user=user, offer_sent=True, offer_accept=False, offer_canceled=False)
+            serializer = BidsSerializer(bids, many=True)
+            return Response(serializer.data)
