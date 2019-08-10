@@ -12,5 +12,6 @@ urlpatterns = [
     url(r'updateUser/$', UpdateUser.as_view()),
     url(r'categories/$', CategoriesView.as_view()),
     url(r'bids/$', BidsView.as_view()),
+    url(r'offers/$', OfferView.as_view()),
     url(r'managerBids/$', ManagerBidsView.as_view()),    
 ]
