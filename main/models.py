@@ -39,23 +39,28 @@ class Bids(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     category = models.ForeignKey(Categories, on_delete=models.PROTECT)
     wish = models.TextField('Пожелание')
-    wish_date = models.DateField('Желаемая дата', default=None)    
-    
-    short_desc = models.CharField('Краткое описание', max_length=100, default="")
-
-    offer_text = models.TextField('Предложение')
-    offer_CHOICES = ((0, 'Подарок'), (1, 'Скидка'))
-    offer_type = models.IntegerField('Тип предложения', choices=offer_CHOICES, default=0)
-    offer_place = models.ForeignKey(Place, on_delete=models.PROTECT, null=True)
-    offer_sent = models.BooleanField('Предложение отправлено', default=False)
-    offer_accept = models.BooleanField('Предложение принятно', default=False)
-    offer_canceled = models.BooleanField('Предложение отклонено', default=False)
-    bid_create_date = models.DateTimeField('Время создания заявки', auto_now_add=True)
-    offer_sent_date = models.DateTimeField('Время отправки предложения', blank=True, null=True)
+    wish_date = models.DateField('Желаемая дата', default=None)   
+    create_date = models.DateTimeField('Время создания заявки', auto_now_add=True)
+    finished = models.BooleanField('Заявка закрыта', default=False)
     class Meta:        
         verbose_name = 'Заявка'
         verbose_name_plural = 'Заявки'
-        ordering = ['-bid_create_date']
+        ordering = ['-create_date']
+
+class Offer(models.Model):    
+    bid = models.ForeignKey(Bids, on_delete=models.PROTECT)
+    short_desc = models.CharField('Краткое описание', max_length=100, default="")
+    text = models.TextField('Предложение')
+    offer_CHOICES = ((0, 'Подарок'), (1, 'Скидка'))
+    otype = models.IntegerField('Тип предложения', choices=offer_CHOICES, default=0)
+    place = models.ForeignKey(Place, on_delete=models.PROTECT, null=True)
+    accept = models.BooleanField('Предложение принятно', default=False)
+    canceled = models.BooleanField('Предложение отклонено', default=False)
+    sent_date = models.DateTimeField('Время отправки предложения', blank=True, null=True, auto_now_add=True)
+    class Meta:
+        verbose_name = 'Предложение'
+        verbose_name_plural = 'Предложения'
+        ordering = ['-sent_date','-accept']
 
 class OnetimePass(models.Model):
     user_phone = models.CharField("Номер телефона", max_length=11, default="")

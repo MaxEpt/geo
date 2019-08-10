@@ -11,14 +11,22 @@ class BidsAdmin(admin.ModelAdmin):
     list_display = [
         'user',
         'category',
-        'bid_create_date',
+        'create_date',
         'wish',
         'wish_date',
-        'offer_text',
-        'offer_sent',
-        'offer_accept',
-        'offer_canceled',
-        'offer_type',        
+        'finished',        
+    ]
+
+@admin.register(Offer)
+class OfferAdmin(admin.ModelAdmin):
+    list_display = [        
+        'bid',
+        'short_desc',
+        'otype',
+        'place',
+        'accept',
+        'canceled',
+        'sent_date'
     ]
 
 @admin.register(Cities)
