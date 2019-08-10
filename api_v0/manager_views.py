@@ -12,11 +12,32 @@ from main.models import *
 class ManagerBidsView(APIView):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
-    def get(self, request):
-        place = Place.objects.get(id=1)        
+    def get(self, request):        
+        place = Place.objects.get( manager=request.user ) 
+        
         bids = Bids.objects.filter(user__city=place.city, category=place.category)
-        #serializer = ManagerBidsSerializer(bids, many=True)
-        for bid in bids:
-            print('123')
-            print(str(bid.user.date_of_birth))
-        return Response({"status:ok"})
+        resp = []
+        for bid in bids:            
+            user_phone = "-"
+            if bid.offer_accept:
+                user_phone = bid.user.phone 
+                
+            if bid.offer_accept and not bid.offer_place==place:
+                continue
+            
+            resp.append({
+                'bid_id':bid.id,
+                'user_phone':user_phone,
+                'user_sex':bid.user.sex,
+                'user_date_of_birth':bid.user.date_of_birth,
+                'user_name':bid.user.name,
+                'wish_date':bid.wish_date,
+                'bid_create_date':bid.bid_create_date,
+                'offer_sent_date':bid.offer_sent_date,
+                'offer_accept':bid.offer_accept,
+                'wish':bid.wish,
+                'offer_canceled':bid.offer_canceled,
+                'offer_sent':bid.offer_sent,                                
+            })
+        
+        return Response(resp)

@@ -28,7 +28,7 @@ class Place(models.Model):
     city = models.ForeignKey(Cities, on_delete=models.PROTECT)
     category = models.ForeignKey(Categories, on_delete=models.PROTECT)
     description = models.TextField("Описание")
-    manager = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, blank=True, default=None)
+    manager = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name="Менеджер", on_delete=models.PROTECT, blank=True, default=None)
     def __str__(self):
         return self.name
     class Meta:        
@@ -51,7 +51,7 @@ class Bids(models.Model):
     offer_accept = models.BooleanField('Предложение принятно', default=False)
     offer_canceled = models.BooleanField('Предложение отклонено', default=False)
     bid_create_date = models.DateTimeField('Время создания заявки', auto_now_add=True)
-    offer_sent_date = models.DateTimeField('Время отправки предложения', auto_now_add=True)
+    offer_sent_date = models.DateTimeField('Время отправки предложения', blank=True, null=True)
     class Meta:        
         verbose_name = 'Заявка'
         verbose_name_plural = 'Заявки'
