@@ -69,6 +69,7 @@ class ConfirmOnetimePass(APIView):
                 user = get_user_model().objects.create(
                     phone = request.POST['phone'],
                     password = new_pass,
+                    is_system_user=False,
                 )
                 existing_user = 'N'                    
             token = Token.objects.get_or_create(user=user)

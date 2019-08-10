@@ -47,7 +47,7 @@ class ExtUser(AbstractBaseUser, PermissionsMixin):
         'Суперпользователь',
         default=False
     )
-    is_system_user = models.BooleanField('Системный пользователь', default=False)
+    is_system_user = models.BooleanField('Системный пользователь', default=True)
     city = models.ForeignKey(Cities, blank=True, on_delete=models.PROTECT, null=True)
     date_of_birth = models.DateField('Дата рождения', blank=True, null=True)
     push_token = models.TextField('GCM Token', max_length=200, blank=True, null=True)
