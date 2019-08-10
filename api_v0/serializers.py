@@ -59,5 +59,5 @@ class DetailBidSerializer(serializers.ModelSerializer):
 class DetailOfferSerializer(serializers.ModelSerializer):
     place = DetailPlaceSerializer()
     class Meta:
-        model = Bids
+        model = Offer
         fields = ("place", "text", "otype")
