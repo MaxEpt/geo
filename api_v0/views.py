@@ -197,7 +197,7 @@ class OfferView(APIView):
             except Bids.DoesNotExist:
                 return Response({'message':'Что то пошло не так, Олежик. Это бэд реквест, выпей таблеточку.'}, status=status.HTTP_400_BAD_REQUEST)            
         else:
-            offers = Offer.objects.filter(bid__user=user, accept=False, canceled=False)
+            offers = Offer.objects.filter(bid__user=user,bid__finished=False, accept=False, canceled=False)
             serializer = OfferListSerializer(offers, many=True)
             return Response(serializer.data)
 
