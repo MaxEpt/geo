@@ -227,9 +227,7 @@ class OfferView(APIView):
                 offer = Offer.objects.get(pk=int(request.POST['id']))
                 if offer.bid.user == user and not offer.accept:                    
                     offer.canceled = True
-                    offer.save()
-                    offer.bid.finished = True
-                    offer.bid.save()
+                    offer.save()                    
                     return Response(status=status.HTTP_200_OK)
                 else:
                     return Response({'message':'Отмена заявки. Что-то пошло не так'}, status=status.HTTP_400_BAD_REQUEST)
