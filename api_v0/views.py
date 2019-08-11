@@ -119,35 +119,6 @@ class BidsView(APIView):
     def post(self, request):
         user = request.user
 
-        if 'accept_bid' in request.POST and int(request.POST['accept_bid']) == 1:            
-            if 'id' not in request.POST or request.POST['id']=="":
-                return Response ({'message':'Что-то пошло не так, скорее всего нет ID заявки'},status=status.HTTP_400_BAD_REQUEST)
-            try:
-                bid = Bids.objects.get(pk=int(request.POST['id']))
-                if bid.user == user and not bid.offer_accept:                    
-                    bid.offer_accept = True
-                    bid.save()
-                    return Response(status=status.HTTP_200_OK)
-                else:
-                    return Response({'message':'Что-то пошло не так'}, status=status.HTTP_400_BAD_REQUEST)
-
-            except Bids.DoesNotExist:
-                return Response({'message':'Что то пошло не так, такой заявки нет'}, status=status.HTTP_400_BAD_REQUEST)
-        
-        if 'cancel_bid' in request.POST and int(request.POST['cancel_bid']) == 1:
-            if 'id' not in request.POST or request.POST['id']=="":
-                return Response ({'message':'Что-то пошло не так, скорее всего нет ID заявки'},status=status.HTTP_400_BAD_REQUEST)
-            try:
-                bid = Bids.objects.get(pk=int(request.POST['id']))
-                if bid.user == user and not bid.offer_accept:                    
-                    bid.offer_canceled = True
-                    bid.save()
-                    return Response(status=status.HTTP_200_OK)
-                else:
-                    return Response({'message':'Отмена заявки. Что-то пошло не так'}, status=status.HTTP_400_BAD_REQUEST)
-            except Bids.DoesNotExist:
-                return Response({'message':'Что то пошло не так, такой заявки нет'}, status=status.HTTP_400_BAD_REQUEST)
-
         if 'wish' not in request.POST or request.POST['wish']=="":
             return Response ({'message':'Сообщите нам свои пожелания :)'},status=status.HTTP_400_BAD_REQUEST)
         
@@ -164,22 +135,7 @@ class BidsView(APIView):
         new_bid.save()
         return Response(status=status.HTTP_200_OK)
 
-    def get(self, request):
-        user = request.user
-        if 'id' in request.GET and request.GET['id'] != "":            
-            try:
-                bid = Bids.objects.get(pk=int(request.GET['id']))
-                if bid.user == user:
-                    serializer = DetailBidSerializer(bid)
-                    return Response(serializer.data)
-                else:
-                    return Response({'message':'Что-то пошло не так'}, status=status.HTTP_400_BAD_REQUEST)
-            except Bids.DoesNotExist:
-                return Response({'message':'Что то пошло не так, Олежик. Это бэд реквест, выпей таблеточку.'}, status=status.HTTP_400_BAD_REQUEST)            
-        else:
-            bids = Bids.objects.filter(user=user, offer_sent=True, offer_accept=False, offer_canceled=False)
-            serializer = BidsSerializer(bids, many=True)
-            return Response(serializer.data)
+
 
 class OfferView(APIView):
     authentication_classes = (TokenAuthentication,)
