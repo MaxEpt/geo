@@ -43,7 +43,7 @@ class Bids(models.Model):
     create_date = models.DateTimeField('Время создания заявки', auto_now_add=True)
     finished = models.BooleanField('Заявка закрыта', default=False)
     def __str__(self):
-        return self.user.phone + " " + self.category.name
+        return self.user.phone + " " + self.category.cat_name
     class Meta:        
         verbose_name = 'Заявка'
         verbose_name_plural = 'Заявки'
