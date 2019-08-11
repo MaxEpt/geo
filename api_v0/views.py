@@ -200,3 +200,39 @@ class OfferView(APIView):
             offers = Offer.objects.filter(bid__user=user, accept=False, canceled=False)
             serializer = OfferListSerializer(offers, many=True)
             return Response(serializer.data)
+
+    def post(self, request):
+        user = request.user
+        if 'accept_bid' in request.POST and int(request.POST['accept_bid']) == 1:            
+            if 'id' not in request.POST or request.POST['id']=="":
+                return Response ({'message':'Что-то пошло не так, скорее всего нет ID заявки'},status=status.HTTP_400_BAD_REQUEST)
+            try:
+                offer = Offer.objects.get(pk=int(request.POST['id']))
+                if offer.bid.user == user and not offer.accept:                    
+                    offer.accept = True
+                    offer.save()
+                    offer.bid.finished = True
+                    offer.bid.save()
+                    return Response(status=status.HTTP_200_OK)
+                else:
+                    return Response({'message':'Что-то пошло не так'}, status=status.HTTP_400_BAD_REQUEST)
+
+            except Offer.DoesNotExist:
+                return Response({'message':'Что то пошло не так, такой заявки нет'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if 'cancel_bid' in request.POST and int(request.POST['cancel_bid']) == 1:
+            if 'id' not in request.POST or request.POST['id']=="":
+                return Response ({'message':'Что-то пошло не так, скорее всего нет ID заявки'},status=status.HTTP_400_BAD_REQUEST)
+            try:
+                offer = Offer.objects.get(pk=int(request.POST['id']))
+                if offer.bid.user == user and not offer.accept:                    
+                    offer.canceled = True
+                    offer.save()
+                    offer.bid.finished = True
+                    offer.bid.save()
+                    return Response(status=status.HTTP_200_OK)
+                else:
+                    return Response({'message':'Отмена заявки. Что-то пошло не так'}, status=status.HTTP_400_BAD_REQUEST)
+            except Offer.DoesNotExist:
+                return Response({'message':'Что то пошло не так, такой заявки нет'}, status=status.HTTP_400_BAD_REQUEST)
+
