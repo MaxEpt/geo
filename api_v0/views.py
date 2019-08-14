@@ -190,3 +190,13 @@ class OfferView(APIView):
             except Offer.DoesNotExist:
                 return Response({'message':'Что то пошло не так, такой заявки нет'}, status=status.HTTP_400_BAD_REQUEST)
 
+
+class ArchiveView(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    def get(self, request):
+        offers = Offer.objects.filter(bid__user=request.user, bid__finished=True).exclude(accept=False, canceled=False)
+        serializer = OfferListSerializer(offers, many=True)
+        return Response(serializer.data)
+
+
